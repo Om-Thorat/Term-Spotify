@@ -7,7 +7,7 @@ pl = Player()
 
 pl.start()
 
-class nowplaying(Static):
+class Nowplaying(Static):
     song = reactive("OOPS")
 
     def on_mount(self):
@@ -24,13 +24,13 @@ class MyApp(App[str]):
     TITLE = "SpotiTui"
 
     def on_mount(self):
-        np = self.query_one(nowplaying)
+        np = self.query_one(Nowplaying)
         np.song = pl.read()
 
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield nowplaying(id="status")
+        yield Nowplaying(id="status")
         yield Button("Back", id="Prev", variant="primary")
         yield Button("Play", id="PlayPause", variant="success")
         yield Button("Next", id="Next",variant="primary")
@@ -42,7 +42,7 @@ class MyApp(App[str]):
         """Event handler called when a button is pressed."""
         pl.proc.stdin.write(f"{event.button.id}\n")
         pl.proc.stdin.flush()
-        np = self.query_one(nowplaying)
+        np = self.query_one(Nowplaying)
         np.song = pl.read()
 
 ui = MyApp()
